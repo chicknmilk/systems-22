@@ -1,5 +1,14 @@
 #include "pipe_networking.h"
 
+
+/*=========================
+  server_setup
+  args:
+  creates the WKP (upstream) and opens it, waiting for a
+  connection.
+  removes the WKP once a connection has been made
+  returns the file descriptor for the upstream pipe.
+  =========================*/
 int server_setup() {
   mkfifo(WKP, 0644);
   int from_client = open(WKP, O_RDONLY);
@@ -7,25 +16,31 @@ int server_setup() {
   return from_client;
 }
 
+
+/*=========================
+  server_connect
+  args: int from_client
+  handles the subserver portion of the 3 way handshake
+  returns the file descriptor for the downstream pipe.
+  =========================*/
 int server_connect(int from_client) {
   char *res = malloc(BUFFER_SIZE);
-  int to_client = 0;
 
   read(from_client, res, BUFFER_SIZE);
   printf("read from client: %s\n", res);
 
-  *to_client = open(res, O_WRONLY);
+  int to_client = open(res, O_WRONLY);
 
-  write(*to_client, ACK, BUFFER_SIZE);
+  write(to_client, ACK, BUFFER_SIZE);
   read(from_client, res, BUFFER_SIZE);
 
-  if (strcmp(res, ACK) == 0) {
-    printf("connected to client\n");
-  }
-  else {
-    printf("connection failed\n");
-    return 0;
-  }
+  // if (strcmp(res, ACK) == 0) {
+  //   printf("connected to client\n");
+  // }
+  // else {
+  //   printf("connection failed\n");
+  //   return 0;
+  // }
 
   return to_client;
 }
