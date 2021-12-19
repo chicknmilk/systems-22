@@ -32,10 +32,11 @@ int server_connect(int from_client) {
   int to_client = open(res, O_WRONLY);
 
   write(to_client, ACK, BUFFER_SIZE);
+  printf("wrote ACK to client\n");
   read(from_client, res, BUFFER_SIZE);
 
   if (strcmp(res, ACK)) {
-    printf("connected to client\n");
+    printf("connected to new client\n");
   }
   else {
     printf("connection failed\n");
