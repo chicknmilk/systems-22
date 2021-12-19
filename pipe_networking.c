@@ -14,9 +14,9 @@ int server_connect(int from_client) {
   read(from_client, res, BUFFER_SIZE);
   printf("read from client: %s\n", res);
 
-  to_client = open(res, O_WRONLY);
+  *to_client = open(res, O_WRONLY);
 
-  write(to_client, ACK, BUFFER_SIZE);
+  write(*to_client, ACK, BUFFER_SIZE);
   read(from_client, res, BUFFER_SIZE);
 
   if (strcmp(res, ACK) == 0) {
