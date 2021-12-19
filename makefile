@@ -22,5 +22,5 @@ clean:
 
 p:
 	git add .
-	git commit -m "push"
+	git commit -m "update"
 	git push
