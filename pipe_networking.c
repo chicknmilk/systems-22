@@ -27,20 +27,20 @@ int server_connect(int from_client) {
   char *res = malloc(BUFFER_SIZE);
 
   read(from_client, res, BUFFER_SIZE);
-  printf("read from client: %s\n", res);
+  printf("client connection: %s\n", res);
 
   int to_client = open(res, O_WRONLY);
 
   write(to_client, ACK, BUFFER_SIZE);
   read(from_client, res, BUFFER_SIZE);
 
-  // if (strcmp(res, ACK) == 0) {
-  //   printf("connected to client\n");
-  // }
-  // else {
-  //   printf("connection failed\n");
-  //   return 0;
-  // }
+  if (!strcmp(res, ACK)) {
+    printf("connected to client\n");
+  }
+  else {
+    printf("connection failed\n");
+    return 0;
+  }
 
   return to_client;
 }
