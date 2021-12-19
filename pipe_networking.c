@@ -34,7 +34,7 @@ int server_connect(int from_client) {
   write(to_client, ACK, BUFFER_SIZE);
   read(from_client, res, BUFFER_SIZE);
 
-  if (!strcmp(res, ACK)) {
+  if (strcmp(res, ACK)) {
     printf("connected to client\n");
   }
   else {
